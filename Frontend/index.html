@@ -4,10 +4,345 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Document</title>
 </head>
 <body>
-    
+    <div class="container">
+        <!-- Sidebar con 5 menús -->
+        <div class="sidebar">
+            <div class="logo">
+                <h2>Dashboard</h2>
+                <p>Sistema de Gestión</p>
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-page="usuarios">
+                    <i class="fas fa-users"></i>
+                    <span>Usuarios</span>
+                </div>
+                <div class="nav-item" data-page="productos">
+                    <i class="fas fa-box"></i>
+                    <span>Productos</span>
+                </div>
+                <div class="nav-item" data-page="ventas">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Ventas</span>
+                </div>
+                <div class="nav-item" data-page="configuracion">
+                    <i class="fas fa-cog"></i>
+                    <span>Configuración</span>
+                </div>
+            </div>
+            
+            <div class="logo" style="border-top: 1px solid rgba(255,255,255,0.1); border-bottom: none; margin-top: auto;">
+                <p>© 2026 Dashboard</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="page-title">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="pageDescription">Bienvenido al panel de control</p>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <strong>Admin User</strong>
+                        <p style="font-size: 12px; margin-top: 2px;">administrador@sistema.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Página Dashboard -->
+            <div id="dashboard" class="content-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>1,234</h3>
+                            <p>Usuarios Totales</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-users" style="color: #667eea;"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>456</h3>
+                            <p>Productos</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-box" style="color: #2ecc71;"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>$12,345</h3>
+                            <p>Ventas del Mes</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line" style="color: #f39c12;"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>89%</h3>
+                            <p>Tasa de Satisfacción</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-star" style="color: #e74c3c;"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Actividad Reciente</h3>
+                            <a href="#">Ver todos</a>
+                        </div>
+                        <table class="activity-table">
+                            <tr>
+                                <td>Nuevo usuario registrado</td>
+                                <td>Hace 5 minutos</td>
+                            </tr>
+                            <tr>
+                                <td>Producto agregado</td>
+                                <td>Hace 1 hora</td>
+                            </tr>
+                            <tr>
+                                <td>Venta completada #1234</td>
+                                <td>Hace 2 horas</td>
+                            </tr>
+                            <tr>
+                                <td>Actualización del sistema</td>
+                                <td>Hace 1 día</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Top Productos</h3>
+                            <a href="#">Ver todos</a>
+                        </div>
+                        <table class="activity-table">
+                            <tr>
+                                <td>Laptop Gaming</td>
+                                <td>45 unidades</td>
+                            </tr>
+                            <tr>
+                                <td>Mouse Inalámbrico</td>
+                                <td>120 unidades</td>
+                            </tr>
+                            <tr>
+                                <td>Teclado Mecánico</td>
+                                <td>78 unidades</td>
+                            </tr>
+                            <tr>
+                                <td>Monitor 24"</td>
+                                <td>34 unidades</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Últimas Ventas</h3>
+                        <a href="#">Ver todas</a>
+                    </div>
+                    <table style="width: 100%;">
+                        <tr style="background: #f8f9fa;">
+                            <th style="padding: 10px; text-align: left;">ID Venta</th>
+                            <th style="padding: 10px; text-align: left;">Cliente</th>
+                            <th style="padding: 10px; text-align: left;">Producto</th>
+                            <th style="padding: 10px; text-align: left;">Total</th>
+                            <th style="padding: 10px; text-align: left;">Estado</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px 10px;">#1001</td>
+                            <td style="padding: 12px 10px;">Juan Pérez</td>
+                            <td style="padding: 12px 10px;">Laptop Pro</td>
+                            <td style="padding: 12px 10px;">$1,299</td>
+                            <td style="padding: 12px 10px;"><span class="badge badge-success">Completada</span></td>
+                        </tr>
+                        <tr style="border-top: 1px solid #eee;">
+                            <td style="padding: 12px 10px;">#1002</td>
+                            <td style="padding: 12px 10px;">María García</td>
+                            <td style="padding: 12px 10px;">Mouse Gaming</td>
+                            <td style="padding: 12px 10px;">$49</td>
+                            <td style="padding: 12px 10px;"><span class="badge badge-success">Completada</span></td>
+                        </tr>
+                        <tr style="border-top: 1px solid #eee;">
+                            <td style="padding: 12px 10px;">#1003</td>
+                            <td style="padding: 12px 10px;">Carlos López</td>
+                            <td style="padding: 12px 10px;">Teclado RGB</td>
+                            <td style="padding: 12px 10px;">$89</td>
+                            <td style="padding: 12px 10px;"><span class="badge badge-warning">Pendiente</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Página Usuarios -->
+            <div id="usuarios" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Lista de Usuarios</h3>
+                        <a href="#"><i class="fas fa-plus"></i> Nuevo Usuario</a>
+                    </div>
+                    <table style="width: 100%;">
+                        <tr style="background: #f8f9fa;">
+                            <th style="padding: 12px; text-align: left;">ID</th>
+                            <th style="padding: 12px; text-align: left;">Nombre</th>
+                            <th style="padding: 12px; text-align: left;">Email</th>
+                            <th style="padding: 12px; text-align: left;">Rol</th>
+                            <th style="padding: 12px; text-align: left;">Estado</th>
+                            <th style="padding: 12px; text-align: left;">Acciones</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px;">1</td>
+                            <td style="padding: 12px;">Admin User</td>
+                            <td style="padding: 12px;">admin@dashboard.com</td>
+                            <td style="padding: 12px;">Administrador</td>
+                            <td style="padding: 12px;"><span class="badge badge-success">Activo</span></td>
+                            <td style="padding: 12px;"><i class="fas fa-edit" style="color: #667eea; margin-right: 10px; cursor: pointer;"></i><i class="fas fa-trash" style="color: #e74c3c; cursor: pointer;"></i></td>
+                        </tr>
+                        <tr style="border-top: 1px solid #eee;">
+                            <td style="padding: 12px;">2</td>
+                            <td style="padding: 12px;">Juan Pérez</td>
+                            <td style="padding: 12px;">juan@example.com</td>
+                            <td style="padding: 12px;">Usuario</td>
+                            <td style="padding: 12px;"><span class="badge badge-success">Activo</span></td>
+                            <td style="padding: 12px;"><i class="fas fa-edit" style="color: #667eea; margin-right: 10px; cursor: pointer;"></i><i class="fas fa-trash" style="color: #e74c3c; cursor: pointer;"></i></td>
+                        </tr>
+                        <tr style="border-top: 1px solid #eee;">
+                            <td style="padding: 12px;">3</td>
+                            <td style="padding: 12px;">María García</td>
+                            <td style="padding: 12px;">maria@example.com</td>
+                            <td style="padding: 12px;">Editor</td>
+                            <td style="padding: 12px;"><span class="badge badge-warning">Inactivo</span></td>
+                            <td style="padding: 12px;"><i class="fas fa-edit" style="color: #667eea; margin-right: 10px; cursor: pointer;"></i><i class="fas fa-trash" style="color: #e74c3c; cursor: pointer;"></i></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Página Productos -->
+            <div id="productos" class="content-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>456</h3>
+                            <p>Total Productos</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-box" style="color: #667eea;"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>$45,678</h3>
+                            <p>Valor Inventario</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-dollar-sign" style="color: #2ecc71;"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>34</h3>
+                            <p>Productos Bajos Stock</p>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-exclamation-triangle" style="color: #f39c12;"></i></div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Lista de Productos</h3>
+                        <a href="#"><i class="fas fa-plus"></i> Agregar Producto</a>
+                    </div>
+                    <table style="width: 100%;">
+                        <tr style="background: #f8f9fa;">
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Producto</th>
+                            <th style="padding: 12px;">Categoría</th>
+                            <th style="padding: 12px;">Precio</th>
+                            <th style="padding: 12px;">Stock</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px;">P001</td>
+                            <td style="padding: 12px;">Laptop Gaming</td>
+                            <td style="padding: 12px;">Electrónica</td>
+                            <td style="padding: 12px;">$1,299</td>
+                            <td style="padding: 12px;">45</td>
+                        </tr>
+                        <tr style="border-top: 1px solid #eee;">
+                            <td style="padding: 12px;">P002</td>
+                            <td style="padding: 12px;">Mouse Inalámbrico</td>
+                            <td style="padding: 12px;">Accesorios</td>
+                            <td style="padding: 12px;">$49</td>
+                            <td style="padding: 12px;">120</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Página Ventas -->
+            <div id="ventas" class="content-section">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-info"><h3>$12,345</h3><p>Ventas Hoy</p></div>
+                        <div class="stat-icon"><i class="fas fa-chart-line" style="color: #667eea;"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info"><h3>89</h3><p>Órdenes</p></div>
+                        <div class="stat-icon"><i class="fas fa-shopping-cart" style="color: #2ecc71;"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info"><h3>$89,456</h3><p>Ventas del Mes</p></div>
+                        <div class="stat-icon"><i class="fas fa-calendar" style="color: #f39c12;"></i></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3>Resumen de Ventas</h3><a href="#">Ver detalle</a></div>
+                    <p style="color: #8b8d9a;">Aquí se mostrarían las gráficas y detalles de ventas.</p>
+                </div>
+            </div>
+
+            <!-- Página Configuración -->
+            <div id="configuracion" class="content-section">
+                <div class="card">
+                    <div class="card-header"><h3>Configuración del Sistema</h3></div>
+                    <div style="padding: 15px;">
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px;">Nombre del Sitio</label>
+                            <input type="text" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="Dashboard Sistema">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px;">Email de Contacto</label>
+                            <input type="email" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="contacto@dashboard.com">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px;">Idioma</label>
+                            <select style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                                <option>Español</option>
+                                <option>English</option>
+                            </select>
+                        </div>
+                        <button style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer;">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
