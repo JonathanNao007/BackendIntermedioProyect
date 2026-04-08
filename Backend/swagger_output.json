@@ -21,7 +21,7 @@
         }
       }
     },
-    "/api/test": {
+    "/api/checkConnection": {
       "get": {
         "description": "",
         "responses": {

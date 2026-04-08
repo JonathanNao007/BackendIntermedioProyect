@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(FRONTEND_DIR, 'index.html'));
 });
 
-app.get('/api/test', async(req, res) => {
+app.get('/api/checkConnection', async(req, res) => {
     try{
         const [rows] = await pool.query("SELECT 1 AS ok;");
         res.json({
@@ -37,6 +37,7 @@ app.get('/api/test', async(req, res) => {
 
 app.get('/api/employees', async(req, res)=>{
     try{
+        const nameEmployee = req.query.nameEmployee;    
         const [rows] = await pool.query(`SELECT birth_date, first_name, last_name, gender, hire_date, d.dept_name
                                         FROM employees e 
                                         LEFT JOIN dept_emp de ON e.emp_no = de.emp_no
