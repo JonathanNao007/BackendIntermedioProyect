@@ -36,13 +36,18 @@ app.get('/api/checkConnection', async(req, res) => {
 });
 
 app.get('/api/employees', async(req, res)=>{
-    try{
-        const nameEmployee = req.query.nameEmployee;    
-        const [rows] = await pool.query(`SELECT birth_date, first_name, last_name, gender, hire_date, d.dept_name
+    try{        
+        const nameEmployee = req.query.nameEmployee ? req.query.nameEmployee.trim() : '';    
+        //
+        let queryConsult = `SELECT birth_date, first_name, last_name, gender, , d.dept_name
                                         FROM employees e 
                                         LEFT JOIN dept_emp de ON e.emp_no = de.emp_no
-                                        LEFT JOIN departments d ON de.dept_no = d.dept_no
-                                        LIMIT 500;`);
+                                        LEFT JOIN departments d ON de.dept_no = d.dept_no`;
+        if(nameEmployee !== ''){
+            queryConsult += ` WHERE first_name LIKE '%${nameEmployee}%' `;
+        }
+        queryConsult += ` LIMIT 500;`;
+        const [rows] = await pool.query(queryConsult);
         res.json(rows)
     } catch(error){
         console.error(error);
@@ -53,6 +58,48 @@ app.get('/api/employees', async(req, res)=>{
     }
 });
 
+app.get('/api/employees/:id', async(req, res)=>{
+    try{
+        const id = parseInt(req.params.id);
+        const idEmployee = Number.isNaN(id) ? 0 : id;    
+        //
+        let queryConsult = `SELECT birth_date, first_name, last_name, gender, hire_date, d.dept_name
+                                        FROM employees e 
+                                        LEFT JOIN dept_emp de ON e.emp_no = de.emp_no
+                                        LEFT JOIN departments d ON de.dept_no = d.dept_no
+                                        WHERE emp_no ='%${idEmployee}%';`;
+        const [rows] = await pool.query(queryConsult);
+        res.json(rows)
+    } catch(error){
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Error en la conexión",
+            error: error.mensaje
+        })
+    }
+});
+
+app.get('/api/employees/:id/historial', async(req, res)=>{
+    try{
+        const id = parseInt(req.params.id);
+        const idEmployee = Number.isNaN(id) ? 0 : id;    
+        //
+        let queryConsult = `SELECT e.emp_no, first_name, last_name, s.from_date, s.to_date, s.salary, title, t.from_date, t.to_date
+                            FROM employees e 
+                            RIGHT JOIN salaries s ON e.emp_no = s.emp_no 
+                            RIGHT JOIN titles t ON e.emp_no = t.emp_no 
+                            WHERE e.emp_no = '%${idEmployee}%'
+                            ORDER BY e.emp_no;`;
+        const [rows] = await pool.query(queryConsult);
+        res.json(rows)
+    } catch(error){
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Error en la conexión",
+            error: error.mensaje
+        })
+    }
+});
 
 
 app.listen(PORT, () => {
