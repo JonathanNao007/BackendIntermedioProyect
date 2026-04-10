@@ -39,10 +39,8 @@ app.get('/api/employees', async(req, res)=>{
     try{        
         const nameEmployee = req.query.nameEmployee ? req.query.nameEmployee.trim() : '';    
         //
-        let queryConsult = `SELECT birth_date, first_name, last_name, gender, , d.dept_name
-                                        FROM employees e 
-                                        LEFT JOIN dept_emp de ON e.emp_no = de.emp_no
-                                        LEFT JOIN departments d ON de.dept_no = d.dept_no`;
+        let queryConsult = `SELECT first_name, last_name, gender, birth_date, hire_date
+                                        FROM employees e`;
         if(nameEmployee !== ''){
             queryConsult += ` WHERE first_name LIKE '%${nameEmployee}%' `;
         }
@@ -67,6 +65,7 @@ app.get('/api/employees/:id', async(req, res)=>{
                                         FROM employees e 
                                         LEFT JOIN dept_emp de ON e.emp_no = de.emp_no
                                         LEFT JOIN departments d ON de.dept_no = d.dept_no
+                                        LEFT JOIN titles t ON e.emp_no = t.emp_no
                                         WHERE emp_no ='%${idEmployee}%';`;
         const [rows] = await pool.query(queryConsult);
         res.json(rows)
