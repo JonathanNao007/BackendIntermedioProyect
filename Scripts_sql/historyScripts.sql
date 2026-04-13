@@ -34,3 +34,10 @@ CREATE TABLE incidencias_rrhh (
     PRIMARY KEY (id_incidencias),
     FOREIGN KEY (emp_no) REFERENCES employees(emp_no)
 );
+
+-- Consulta de incidencias
+SELECT  id_incidencias, emp_no, tipo, fecha, descripcion, estatus
+FROM incidencias_rrhh i
+LEFT JOIN employees e ON i.emp_no = e.emp_no
+WHERE i.decripcion LIKE '% %' 
+AND i.tipo = '0'
