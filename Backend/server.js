@@ -29,7 +29,7 @@ app.get('/api/checkConnection', async(req, res) => {
     } catch(error){
         console.error(error);
         res.status(500).json({
-            mensaje: "Error en la conexión",
+            mensaje: "Error en la consulta",
             error: error.mensaje
         })
     }
@@ -50,7 +50,7 @@ app.get('/api/employees', async(req, res)=>{
     } catch(error){
         console.error(error);
         res.status(500).json({
-            mensaje: "Error en la conexión",
+            mensaje: "Error en la consulta de empleados",
             error: error.mensaje
         })
     }
@@ -66,13 +66,15 @@ app.get('/api/employees/:id', async(req, res)=>{
                                         LEFT JOIN dept_emp de ON e.emp_no = de.emp_no
                                         LEFT JOIN departments d ON de.dept_no = d.dept_no
                                         LEFT JOIN titles t ON e.emp_no = t.emp_no
-                                        WHERE emp_no ='%${idEmployee}%';`;
+                                        WHERE e.emp_no ='${idEmployee}'
+                                        ORDER BY t.to_date DESC
+                                        LIMIT 1;`;
         const [rows] = await pool.query(queryConsult);
         res.json(rows)
     } catch(error){
         console.error(error);
         res.status(500).json({
-            mensaje: "Error en la conexión",
+            mensaje: "Error en la consulta de empleado por id",
             error: error.mensaje
         })
     }
@@ -87,19 +89,107 @@ app.get('/api/employees/:id/historial', async(req, res)=>{
                             FROM employees e 
                             RIGHT JOIN salaries s ON e.emp_no = s.emp_no 
                             RIGHT JOIN titles t ON e.emp_no = t.emp_no 
-                            WHERE e.emp_no = '%${idEmployee}%'
+                            WHERE e.emp_no = '${idEmployee}'
                             ORDER BY e.emp_no;`;
         const [rows] = await pool.query(queryConsult);
         res.json(rows)
     } catch(error){
         console.error(error);
         res.status(500).json({
-            mensaje: "Error en la conexión",
+            mensaje: "Error en la consulta del historial de un emplado",
             error: error.mensaje
         })
     }
 });
 
+app.get('/api/departments', async (req, res)=>{
+    try{
+        let query = `SELECT dept_no, dept_name FROM departments;`;
+        const [rows] = await pool.query(query);
+        res.json(rows);
+    } catch(error){
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Error en la consulta, de los departamentos",
+            error: error.mensaje
+        })
+    }    
+});
+
+app.get('/api/departments/:dept_no/employes', async (req, res)=>{
+    try{
+        const dept_no = req.params.idept_no ?? '';
+        let query = `SELECT dept_name, from_date, to_date, first_name, last_name 
+                    FROM departments d
+                    LEFT JOIN dept_emp de ON d.dept_no = de.dept_no
+                    RIGHT JOIN employees e ON de.emp_no = e.emp_no
+                    WHERE de.dept_no = '${dept_no}'
+                    ORDER BY de.to_date DESC;`;
+        const [rows] = await pool.query(query);
+        res.json(rows);
+    } catch(error){
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Error en la consulta, ",
+            error: error.mensaje
+        })
+    }    
+});
+
+app.get('/api/incidencias', async (req, res)=>{
+    try{
+        const description = req.query.description ? req.query.description.trim() : '';
+        const type = req.query.type ? req.query.type.trim() : ''; 
+        let query = `SELECT  id_incidencias, emp_no, tipo, fecha, descripcion, estatus
+                    FROM incidencias_rrhh i
+                    LEFT JOIN employees e ON i.emp_no = e.emp_no
+                    WHERE i.decripcion LIKE '% %' 
+                    AND i.tipo = '0';`;
+    } catch(error){
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Error en la consulta, ",
+            error: error.mensaje
+        })
+    }    
+});
+
+app.post('/api/incidencias', async (req, res)=>{
+    try{
+        
+    } catch(error){
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Error en la consulta, ",
+            error: error.mensaje
+        })
+    }    
+});
+
+app.put('/api/incidencias/:id', async (req, res)=>{
+    try{
+        const id = req.params.id ?? '';
+        const id_incidencias = Number.isNaN(id) ? 0 : id;  
+    } catch(error){
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Error en la consulta, ",
+            error: error.mensaje
+        })
+    }    
+});
+
+app.get('/api/dashboard/resume', async (req, res)=>{
+    try{
+        
+    } catch(error){
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Error en la consulta, ",
+            error: error.mensaje
+        })
+    }    
+});
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
