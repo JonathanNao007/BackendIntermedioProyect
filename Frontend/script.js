@@ -46,7 +46,7 @@
             switch(pageId){
                 case 'dashboard':
 
-                break;
+                break;  
                 case 'empleados':
 
                 break;
