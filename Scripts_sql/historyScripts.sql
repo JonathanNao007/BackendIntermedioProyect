@@ -24,8 +24,9 @@ WHERE de.dept_no = 'd005'
 ORDER BY de.to_date DESC;
 
 -- Creacion de la tabla de incidencias 
+-- DROP TABLE incidencias_rrhh;
 CREATE TABLE incidencias_rrhh (
-    id_incidencias int NOT NULL, 
+    id_incidencias int NOT NULL AUTO_INCREMENT, 
     emp_no int NOT NULL,
     tipo varchar(50),
     fecha date DEFAULT(current_date()), 
@@ -41,3 +42,12 @@ FROM incidencias_rrhh i
 LEFT JOIN employees e ON i.emp_no = e.emp_no
 WHERE i.decripcion LIKE '% %' 
 AND i.tipo = '0'
+
+-- insertar nuevos registros
+INSERT INTO incidencias_rrhh(emp_no, tipo, fecha, descripcion, estatus)
+VALUES ('', '', '', '', '');
+
+-- actualizar registros
+UPDATE incidencias_rrhh SET tipo = '', fecha = '', descripcion = '', estatus = ''
+WHERE id_incidencias = '';
+

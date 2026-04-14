@@ -10,6 +10,7 @@
         // Obtener elementos
         const navItems = document.querySelectorAll('.nav-item');
         const sections = document.querySelectorAll('.content-section');
+        console.log(sections);
         const pageTitle = document.getElementById('pageTitle');
         const pageDescription = document.getElementById('pageDescription');
 
@@ -39,6 +40,26 @@
                     item.classList.add('active');
                 }
             });
+        }
+
+        function getInfoForSecction(pageId){
+            switch(pageId){
+                case 'dashboard':
+
+                break;
+                case 'empleados':
+
+                break;
+                case 'departamentos':
+
+                break;
+                case 'titulosysalarios':
+
+                break;
+                case 'incidencias':
+
+                break;
+            }
         }
 
         // Agregar eventos a los menús

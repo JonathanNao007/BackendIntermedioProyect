@@ -5,6 +5,7 @@ const pool = require('./mysql_db/connection');
 //Swagger exports
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('./swagger_output.json');
+const e = require('express');
 
 const app = express();
 const PORT = 3000;
@@ -30,7 +31,7 @@ app.get('/api/checkConnection', async(req, res) => {
         console.error(error);
         res.status(500).json({
             mensaje: "Error en la consulta",
-            error: error.mensaje
+            error: error.sqlMessage
         })
     }
 });
@@ -39,7 +40,7 @@ app.get('/api/employees', async(req, res)=>{
     try{        
         const nameEmployee = req.query.nameEmployee ? req.query.nameEmployee.trim() : '';    
         //
-        let queryConsult = `SELECT first_name, last_name, gender, birth_date, hire_date
+        let queryConsult = `SELECT emp_no, first_name, last_name, gender, birth_date, hire_date
                                         FROM employees e`;
         if(nameEmployee !== ''){
             queryConsult += ` WHERE first_name LIKE '%${nameEmployee}%' `;
@@ -51,7 +52,7 @@ app.get('/api/employees', async(req, res)=>{
         console.error(error);
         res.status(500).json({
             mensaje: "Error en la consulta de empleados",
-            error: error.mensaje
+            error: error.sqlMessage
         })
     }
 });
@@ -75,7 +76,7 @@ app.get('/api/employees/:id', async(req, res)=>{
         console.error(error);
         res.status(500).json({
             mensaje: "Error en la consulta de empleado por id",
-            error: error.mensaje
+            error: error.sqlMessage
         })
     }
 });
@@ -97,7 +98,7 @@ app.get('/api/employees/:id/historial', async(req, res)=>{
         console.error(error);
         res.status(500).json({
             mensaje: "Error en la consulta del historial de un emplado",
-            error: error.mensaje
+            error: error.sqlMessage
         })
     }
 });
@@ -111,27 +112,28 @@ app.get('/api/departments', async (req, res)=>{
         console.error(error);
         res.status(500).json({
             mensaje: "Error en la consulta, de los departamentos",
-            error: error.mensaje
+            error: error.sqlMessage
         })
     }    
 });
 
 app.get('/api/departments/:dept_no/employes', async (req, res)=>{
     try{
-        const dept_no = req.params.idept_no ?? '';
+        const dept_no = req.params.dept_no;
         let query = `SELECT dept_name, from_date, to_date, first_name, last_name 
                     FROM departments d
                     LEFT JOIN dept_emp de ON d.dept_no = de.dept_no
                     RIGHT JOIN employees e ON de.emp_no = e.emp_no
                     WHERE de.dept_no = '${dept_no}'
-                    ORDER BY de.to_date DESC;`;
+                    ORDER BY de.to_date DESC
+                    LIMIT 200;`;
         const [rows] = await pool.query(query);
         res.json(rows);
     } catch(error){
         console.error(error);
         res.status(500).json({
-            mensaje: "Error en la consulta, ",
-            error: error.mensaje
+            mensaje: "Error en la consulta, del historico del empleado",
+            error: error.sqlMessage
         })
     }    
 });
@@ -140,28 +142,46 @@ app.get('/api/incidencias', async (req, res)=>{
     try{
         const description = req.query.description ? req.query.description.trim() : '';
         const type = req.query.type ? req.query.type.trim() : ''; 
-        let query = `SELECT  id_incidencias, emp_no, tipo, fecha, descripcion, estatus
+        let query = `SELECT  id_incidencias, i.emp_no, tipo, fecha, descripcion, estatus
                     FROM incidencias_rrhh i
-                    LEFT JOIN employees e ON i.emp_no = e.emp_no
-                    WHERE i.decripcion LIKE '% %' 
-                    AND i.tipo = '0';`;
+                    LEFT JOIN employees e ON i.emp_no = e.emp_no`;
+
+        if(description !== '' && type !== ''){
+            query += `WHERE i.decripcion LIKE '%${description}%' 
+                    AND i.tipo = '${type}';`;
+        }
+        else if(description !== ''){
+            query += `WHERE i.decripcion LIKE '%${description}%';`;
+        }
+        else if(type !== ''){
+            query += `WHERE i.tipo = '${type}';`;
+        }    
+        else{
+            query += `;`; 
+        }    
+        const [rows] = await pool.query(query);
+        res.json(rows);
     } catch(error){
         console.error(error);
         res.status(500).json({
-            mensaje: "Error en la consulta, ",
-            error: error.mensaje
+            mensaje: "Error en la consulta, de incidencias",
+            error: error.sqlMessage
         })
     }    
 });
 
 app.post('/api/incidencias', async (req, res)=>{
     try{
-        
+        const {emp_no, tipo, fecha, descripcion, estatus} = req.body;
+        let queryInsert = `INSERT INTO incidencias_rrhh(emp_no, tipo, fecha, descripcion, estatus)
+                            VALUES ('${emp_no}', '${tipo}', STR_TO_DATE('${fecha}'), '${descripcion}', '${estatus}');`;
+        const [rows] = await pool.query(queryInsert);
+        res.json(rows);
     } catch(error){
         console.error(error);
         res.status(500).json({
             mensaje: "Error en la consulta, ",
-            error: error.mensaje
+            error: error.sqlMessage
         })
     }    
 });
@@ -170,23 +190,53 @@ app.put('/api/incidencias/:id', async (req, res)=>{
     try{
         const id = req.params.id ?? '';
         const id_incidencias = Number.isNaN(id) ? 0 : id;  
+        //
+        const {tipo, fecha, descripcion, estatus} = req.body;
+        let query = `UPDATE incidencias_rrhh SET tipo = '${tipo}', fecha = STR_TO_DATE('${fecha}'), descripcion = '${descripcion}', estatus = '${estatus}'
+                    WHERE id_incidencias = '${id_incidencias}';`;
+        const [rows] = await pool.query(query);
+        res.json(rows);
     } catch(error){
         console.error(error);
         res.status(500).json({
             mensaje: "Error en la consulta, ",
-            error: error.mensaje
+            error: error.sqlMessage
         })
     }    
 });
 
 app.get('/api/dashboard/resume', async (req, res)=>{
     try{
-        
+        let resumen = {
+            empleados: [],
+            salarios: [],
+            departamentos: []
+        };
+        let queryEmp = `SELECT first_name, last_name, gender, hire_date FROM employees ORDER BY hire_date DESC LIMIT 10;`;
+        let querySal = `SELECT first_name, last_name, gender, salary, title  FROM salaries s 
+                        LEFT JOIN employees e ON s.emp_no = e.emp_no
+                        LEFT JOIN titles t ON e.emp_no = t.emp_no 
+                        ORDER BY salary DESC
+                        LIMIT 10;`;
+        let queryDep = `SELECT d.dept_name, COUNT(e.emp_no) FROM departments d
+                        LEFT JOIN dept_emp de ON d.dept_no = de.dept_no
+                        LEFT JOIN employees e ON de.emp_no = e.emp_no 
+                        GROUP BY d.dept_no;`;
+                        //
+        const [rowsE] = await pool.query(queryEmp);
+        const [rowsS] = await pool.query(querySal);
+        const [rowsD] = await pool.query(queryDep);
+        //
+        resumen.empleados = rowsE ?? [];
+        resumen.salarios = rowsS ?? [];
+        resumen.departamentos = rowsD ?? [];
+        //
+        res.json(resumen);
     } catch(error){
         console.error(error);
         res.status(500).json({
             mensaje: "Error en la consulta, ",
-            error: error.mensaje
+            error: error.sqlMessage
         })
     }    
 });
