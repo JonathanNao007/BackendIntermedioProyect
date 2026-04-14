@@ -50,4 +50,3 @@ VALUES ('', '', '', '', '');
 -- actualizar registros
 UPDATE incidencias_rrhh SET tipo = '', fecha = '', descripcion = '', estatus = ''
 WHERE id_incidencias = '';
-

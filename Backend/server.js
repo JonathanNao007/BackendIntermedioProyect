@@ -11,7 +11,12 @@ const app = express();
 const PORT = 3000;
 
 const FRONTEND_DIR = path.join(__dirname, '../Frontend');
-
+//config API openweater
+const configApi = require('./config.json')
+const API_KEY = configApi.ApiKey;
+//const API_URL = (ciudad) => `${configApi.Url}?q=${ciudad}&lang=${configApi.Idioma.Español}&units=metric&appid=${API_KEY}`;
+const API_URL = (lat, lon) => `${configApi.Url}?lat=${lat}&lon=${lon}&lang=${configApi.Idioma.Español}&units=metric&appid=${API_KEY}`;
+q=
 app.use(express.static(FRONTEND_DIR));
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
@@ -239,6 +244,59 @@ app.get('/api/dashboard/resume', async (req, res)=>{
             error: error.sqlMessage
         })
     }    
+});
+
+app.get('/api/openweathermap', async (req, res)=> {
+    try{
+
+        let salida = {
+            ciudad: `--`,
+            temperatura: `--°`,
+            descripcion: `--`,
+            momento: '--'
+        };
+        const latitud = 19.4285;
+        const longitud = -99.1277;
+        //const ciudad = req.query.ciudad ? req.query.ciudad.trim() : configApi.CiudadInicial;
+        if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+            latitud = position.coords.latitude;
+            longitud = position.coords.longitude;
+            console.log(`Latitud: ${latitud}, Longitud: ${longitud}`);
+            },
+            (error) => {
+            console.error("Error obteniendo ubicación:", error.message);
+            }
+        );
+        } else {
+        console.log("Geolocalización no soportada por el navegador");
+        }
+        //
+        //console.log(ciudad);
+        console.log(API_URL(latitud, longitud));
+        const response = await fetch(API_URL(latitud, longitud));
+        if(response.ok){
+            const datosW = await response.json();
+            console.log(datosW);
+            salida = {
+            ciudad: `${datosW.name}, ${datosW.sys.country}`,
+            temperatura: `${datosW.main.temp}°`,
+            descripcion: `${datosW.weather[0].description}`,
+            momento: (datosW.weather[0].icon).includes('n') ? 'noche' : 'dia'};
+        }
+        else{
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }        
+        res.json(salida);
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({
+            mensaje: "Error en la consulta, del api del openweathermap",
+            error: error
+        })
+    }
 });
 
 app.listen(PORT, () => {

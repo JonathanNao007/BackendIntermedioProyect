@@ -1,0 +1,9 @@
+{
+    "Url":"https://api.openweathermap.org/data/2.5/weather",
+    "ApiKey":"eff70d55961332486a055262cb2aa16f",
+    "Idioma":{
+        "Español":"es",
+        "Ingles":"en"
+    },
+    "CiudadInicial":"Mexico City, MX"
+}

@@ -1,10 +1,10 @@
      // Menús con sus respectivas páginas
         const pages = {
             dashboard: { title: 'Dashboard', desc: 'Bienvenido al panel de control' },
-            usuarios: { title: 'Usuarios', desc: 'Gestión de usuarios del sistema' },
-            productos: { title: 'Productos', desc: 'Catálogo de productos' },
-            ventas: { title: 'Ventas', desc: 'Historial y estadísticas de ventas' },
-            configuracion: { title: 'Configuración', desc: 'Ajustes del sistema' }
+            usuarios: { title: 'Empleados', desc: 'Gestión de Empleados del sistema' },
+            productos: { title: 'Departamentos', desc: 'Catálogo de departamanetos' },
+            ventas: { title: 'Titulos Y Salarios', desc: 'Historial de Titulos y Salarios' },
+            configuracion: { title: 'Incidencias', desc: 'Registro de Incidencias' }
         };
 
         // Obtener elementos
@@ -71,3 +71,32 @@
                 }
             });
         });
+
+
+        async function consultarClima(lat, lon, units = 'metric', lang = 'es') {
+            try {
+                const url = `/api/openweathermap`;
+                console.log('Consultando:', url);
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                mostrarLoading(false);
+                
+                if (data.exito) {
+                    mostrarClima(data.datos);
+                    guardarHistorial(data.datos);
+                } else {
+                    mostrarError(data.mensaje || 'Error al obtener el clima');
+                }
+            } catch (error) {
+                mostrarLoading(false);
+                mostrarError('Error de conexión: ' + error.message);
+                console.error('Error:', error);
+            }
+        }
+
+         // Utilidades
+        function mostrarLoading(mostrar) {
+            document.getElementById('loading').style.display = mostrar ? 'block' : 'none';
+        }
