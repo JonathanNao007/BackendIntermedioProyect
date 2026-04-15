@@ -22,19 +22,19 @@
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </div>
-                <div class="nav-item" data-page="usuarios">
+                <div class="nav-item" data-page="empleados">
                     <i class="fas fa-users"></i>
                     <span>Empleados</span>
                 </div>
-                <div class="nav-item" data-page="productos">
+                <div class="nav-item" data-page="departamentos">
                     <i class="fas fa-box"></i>
                     <span>Departamentos</span>
                 </div>
-                <div class="nav-item" data-page="ventas">
+                <div class="nav-item" data-page="titulosysalarios">
                     <i class="fas fa-chart-line"></i>
                     <span>Titulos y salarios </span>
                 </div>
-                <div class="nav-item" data-page="configuracion">
+                <div class="nav-item" data-page="incidencias">
                     <i class="fas fa-cog"></i>
                     <span>Incidencias</span>
                 </div>
@@ -55,19 +55,21 @@
                 </div>
                 <div class="user-info">
                     <div class="user-avatar">
-                        <i class="fas fa-user"></i>
+                        <i class="fa-solid fa-cloud-sun"></i>
                     </div>
                     <div>
-                        <strong>Admin User</strong>
-                        <p style="font-size: 12px; margin-top: 2px;">Jonathan.Sanchez@sistema.com</p>
+                        <strong id="clima-text">--</strong>
+                        <p id="com-clima" style="font-size: 12px; margin-top: 2px;">--</p>
                     </div>
                 </div>
             </div>
-
+            <!-- spinner y error, revisar -->
             <div id="loading" class="loading">
                 <div class="spinner"></div>
                 <p>Obteniendo información del clima...</p>
             </div>
+
+            <div id="error" class="error" style="display:none;"></div>
 
             <!-- Página Dashboard -->
             <div id="dashboard" class="content-section active">
@@ -204,43 +206,31 @@
             <div id="empleados" class="content-section">
                 <div class="card">
                     <div class="card-header">
-                        <h3>Lista de Usuarios</h3>
-                        <a href="#"><i class="fas fa-plus"></i> Nuevo Usuario</a>
+                        <h3>Lista de Empleados</h3>
                     </div>
-                    <table style="width: 100%;">
-                        <tr style="background: #f8f9fa;">
-                            <th style="padding: 12px; text-align: left;">ID</th>
-                            <th style="padding: 12px; text-align: left;">Nombre</th>
-                            <th style="padding: 12px; text-align: left;">Email</th>
-                            <th style="padding: 12px; text-align: left;">Rol</th>
-                            <th style="padding: 12px; text-align: left;">Estado</th>
-                            <th style="padding: 12px; text-align: left;">Acciones</th>
-                        </tr>
-                        <tr>
-                            <td style="padding: 12px;">1</td>
-                            <td style="padding: 12px;">Admin User</td>
-                            <td style="padding: 12px;">admin@dashboard.com</td>
-                            <td style="padding: 12px;">Administrador</td>
-                            <td style="padding: 12px;"><span class="badge badge-success">Activo</span></td>
-                            <td style="padding: 12px;"><i class="fas fa-edit" style="color: #667eea; margin-right: 10px; cursor: pointer;"></i><i class="fas fa-trash" style="color: #e74c3c; cursor: pointer;"></i></td>
-                        </tr>
-                        <tr style="border-top: 1px solid #eee;">
-                            <td style="padding: 12px;">2</td>
-                            <td style="padding: 12px;">Juan Pérez</td>
-                            <td style="padding: 12px;">juan@example.com</td>
-                            <td style="padding: 12px;">Usuario</td>
-                            <td style="padding: 12px;"><span class="badge badge-success">Activo</span></td>
-                            <td style="padding: 12px;"><i class="fas fa-edit" style="color: #667eea; margin-right: 10px; cursor: pointer;"></i><i class="fas fa-trash" style="color: #e74c3c; cursor: pointer;"></i></td>
-                        </tr>
-                        <tr style="border-top: 1px solid #eee;">
-                            <td style="padding: 12px;">3</td>
-                            <td style="padding: 12px;">María García</td>
-                            <td style="padding: 12px;">maria@example.com</td>
-                            <td style="padding: 12px;">Editor</td>
-                            <td style="padding: 12px;"><span class="badge badge-warning">Inactivo</span></td>
-                            <td style="padding: 12px;"><i class="fas fa-edit" style="color: #667eea; margin-right: 10px; cursor: pointer;"></i><i class="fas fa-trash" style="color: #e74c3c; cursor: pointer;"></i></td>
-                        </tr>
-                    </table>
+                    <div class="form-container">
+                        <form id="searchForm" class="form-display">
+                            <div class="form-group">
+                                <label for="numeroEmp">Número Empleado (ID):</label>
+                                <input type="number" id="numeroEmp" name="numeroEmp" placeholder="Ej: 123">
+                                <div class="error" id="errorNumero">Ingrese un número válido</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="nombreEmp">Empleado (Nombre):</label>
+                                <input type="text" id="nombreEmp" name="nombreEmp" placeholder="Ej: Juan Pérez">
+                                <div class="error" id="errorTexto">Ingrese un texto válido</div>
+                            </div>
+                            <div>
+                                <br>
+                                <button id="btn-buscarEmpleado" onclick="event.preventDefault(); consultaAsignaEmpleados()">🔍 Buscar</button>
+                            </div>                            
+                        </form>                        
+                        <div id="resultado" class="resultado"></div>
+                    </div>
+                    <div class="card-table">                                                                           
+                        <div id="empleadosRows" class=""></div>                    
+                    </div>
                 </div>
             </div>
 
@@ -275,7 +265,8 @@
                         <h3>Lista de Productos</h3>
                         <a href="#"><i class="fas fa-plus"></i> Agregar Producto</a>
                     </div>
-                    <table style="width: 100%;">
+                    <div class="card-table">
+                        <table style="width: 100%;">
                         <tr style="background: #f8f9fa;">
                             <th style="padding: 12px;">ID</th>
                             <th style="padding: 12px;">Producto</th>
@@ -298,6 +289,7 @@
                             <td style="padding: 12px;">120</td>
                         </tr>
                     </table>
+                    </div>                    
                 </div>
             </div>
 

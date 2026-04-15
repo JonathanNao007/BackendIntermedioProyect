@@ -43,14 +43,21 @@ app.get('/api/checkConnection', async(req, res) => {
 
 app.get('/api/employees', async(req, res)=>{
     try{        
-        const nameEmployee = req.query.nameEmployee ? req.query.nameEmployee.trim() : '';    
+        const nameEmployee = req.query.nameEmployee ? req.query.nameEmployee.trim() : '';   
+        const idEmployee = req.query.idEmployee ? req.query.idEmployee.trim() : ''; 
         //
-        let queryConsult = `SELECT emp_no, first_name, last_name, gender, birth_date, hire_date
+        let queryConsult = `SELECT emp_no, first_name, last_name, CASE WHEN gender = 'M' THEN 'Male' ELSE 'Female' END AS gender, birth_date, hire_date
                                         FROM employees e`;
-        if(nameEmployee !== ''){
+        if(nameEmployee !== '' && idEmployee !== ''){
+            queryConsult += ` WHERE emp_no = '${idEmployee}' AND first_name LIKE '%${nameEmployee}%' `;
+        }
+        else if(nameEmployee !== ''){
             queryConsult += ` WHERE first_name LIKE '%${nameEmployee}%' `;
         }
-        queryConsult += ` LIMIT 500;`;
+        else if(idEmployee !== ''){
+            queryConsult += ` WHERE emp_no = '${idEmployee}' `;
+        }
+        queryConsult += ` LIMIT 200;`;
         const [rows] = await pool.query(queryConsult);
         res.json(rows)
     } catch(error){
