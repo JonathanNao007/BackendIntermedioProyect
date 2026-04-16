@@ -21,6 +21,9 @@
         const modal = document.getElementById('modalInfo');    
         const modalTitle = document.getElementById('modalTitle')
         const btnCloseModal = document.getElementById('spanCloseModal');
+        //
+        const 
+        //
         let mensajeClimaActual = '';
         let mensajeClimaActualCom = '';
 
@@ -489,9 +492,9 @@
 
         document.addEventListener("DOMContentLoaded", (event) => {
             console.log("The DOM is fully loaded.");
-            // Your code to manipulate elements goes here
+            //Your code to manipulate elements goes here
             consultaAsignaDashboard();
-            // consultarClima();
+            //consultarClima();
 
         });
 

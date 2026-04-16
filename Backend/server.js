@@ -204,7 +204,7 @@ app.post('/api/incidencias', async (req, res)=>{
     try{
         const {emp_no, tipo, fecha, descripcion, estatus} = req.body;
         let queryInsert = `INSERT INTO incidencias_rrhh(emp_no, tipo, fecha, descripcion, estatus)
-                            VALUES ('${emp_no}', '${tipo}', STR_TO_DATE('${fecha}'), '${descripcion}', '${estatus}');`;
+                            VALUES ('${emp_no}', '${tipo}', STR_TO_DATE('${fecha}', '%Y-%m-%d'), '${descripcion}', '${estatus}');`;
         const [rows] = await pool.query(queryInsert);
         res.json(rows);
     } catch(error){
