@@ -30,10 +30,10 @@
                     <i class="fas fa-box"></i>
                     <span>Departamentos</span>
                 </div>
-                <div class="nav-item" data-page="titulosysalarios">
+                <!-- <div class="nav-item" data-page="titulosysalarios" hidden>
                     <i class="fas fa-chart-line"></i>
                     <span>Titulos y salarios </span>
-                </div>
+                </div> -->
                 <div class="nav-item" data-page="incidencias">
                     <i class="fas fa-cog"></i>
                     <span>Incidencias</span>
@@ -73,136 +73,36 @@
 
             <!-- Página Dashboard -->
             <div id="dashboard" class="content-section active">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>1,234</h3>
-                            <p>Usuarios Totales</p>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-users" style="color: #667eea;"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>456</h3>
-                            <p>Productos</p>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-box" style="color: #2ecc71;"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>$12,345</h3>
-                            <p>Ventas del Mes</p>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-chart-line" style="color: #f39c12;"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>89%</h3>
-                            <p>Tasa de Satisfacción</p>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-star" style="color: #e74c3c;"></i>
-                        </div>
-                    </div>
-                </div>
-
+                
                 <div class="dashboard-grid">
                     <div class="card">
                         <div class="card-header">
                             <h3>Actividad Reciente</h3>
-                            <a href="#"></a>
+                            <!-- <a href="#"></a> -->
                         </div>
-                        <table class="activity-table">
-                            <tr>
-                                <td>Nuevo usuario registrado</td>
-                                <td>Hace 5 minutos</td>
-                            </tr>
-                            <tr>
-                                <td>Producto agregado</td>
-                                <td>Hace 1 hora</td>
-                            </tr>
-                            <tr>
-                                <td>Venta completada #1234</td>
-                                <td>Hace 2 horas</td>
-                            </tr>
-                            <tr>
-                                <td>Actualización del sistema</td>
-                                <td>Hace 1 día</td>
-                            </tr>
-                        </table>
+                        <div id="resumeDepartementosRows"></div>                        
                     </div>
 
                     <div class="card">
                         <div class="card-header">
-                            <h3>Top Productos</h3>
-                            <a href="#"></a>
+                            <h3>Ultimas Contrataciones</h3>
+                            <!-- <a href="#"></a> -->
                         </div>
-                        <table class="activity-table">
-                            <tr>
-                                <td>Laptop Gaming</td>
-                                <td>45 unidades</td>
-                            </tr>
-                            <tr>
-                                <td>Mouse Inalámbrico</td>
-                                <td>120 unidades</td>
-                            </tr>
-                            <tr>
-                                <td>Teclado Mecánico</td>
-                                <td>78 unidades</td>
-                            </tr>
-                            <tr>
-                                <td>Monitor 24"</td>
-                                <td>34 unidades</td>
-                            </tr>
-                        </table>
+                        <div id="resumeContratacionesRows"></div>                        
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-header">
-                        <h3>Últimas Ventas</h3>
-                        <a href="#">Ver todas</a>
+                        <h3>Top Salarios</h3>                        
                     </div>
-                    <table style="width: 100%;">
-                        <tr style="background: #f8f9fa;">
-                            <th style="padding: 10px; text-align: left;">ID Venta</th>
-                            <th style="padding: 10px; text-align: left;">Cliente</th>
-                            <th style="padding: 10px; text-align: left;">Producto</th>
-                            <th style="padding: 10px; text-align: left;">Total</th>
-                            <th style="padding: 10px; text-align: left;">Estado</th>
-                        </tr>
-                        <tr>
-                            <td style="padding: 12px 10px;">#1001</td>
-                            <td style="padding: 12px 10px;">Juan Pérez</td>
-                            <td style="padding: 12px 10px;">Laptop Pro</td>
-                            <td style="padding: 12px 10px;">$1,299</td>
-                            <td style="padding: 12px 10px;"><span class="badge badge-success">Completada</span></td>
-                        </tr>
-                        <tr style="border-top: 1px solid #eee;">
-                            <td style="padding: 12px 10px;">#1002</td>
-                            <td style="padding: 12px 10px;">María García</td>
-                            <td style="padding: 12px 10px;">Mouse Gaming</td>
-                            <td style="padding: 12px 10px;">$49</td>
-                            <td style="padding: 12px 10px;"><span class="badge badge-success">Completada</span></td>
-                        </tr>
-                        <tr style="border-top: 1px solid #eee;">
-                            <td style="padding: 12px 10px;">#1003</td>
-                            <td style="padding: 12px 10px;">Carlos López</td>
-                            <td style="padding: 12px 10px;">Teclado RGB</td>
-                            <td style="padding: 12px 10px;">$89</td>
-                            <td style="padding: 12px 10px;"><span class="badge badge-warning">Pendiente</span></td>
-                        </tr>
-                    </table>
+                    <div class="card-table">
+                        <div id="resumeSalariesRows"></div>                    
+                    </div>                    
                 </div>
             </div>
 
-            <!-- Página empleados -->
+            <!-- Página empleados=========================================================================== -->
             <div id="empleados" class="content-section">
                 <div class="card">
                     <div class="card-header">
@@ -234,66 +134,19 @@
                 </div>
             </div>
 
-            <!-- Página departamentos -->
-            <div id="departamentos" class="content-section">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>456</h3>
-                            <p>Total Productos</p>
-                        </div>
-                        <div class="stat-icon"><i class="fas fa-box" style="color: #667eea;"></i></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>$45,678</h3>
-                            <p>Valor Inventario</p>
-                        </div>
-                        <div class="stat-icon"><i class="fas fa-dollar-sign" style="color: #2ecc71;"></i></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3>34</h3>
-                            <p>Productos Bajos Stock</p>
-                        </div>
-                        <div class="stat-icon"><i class="fas fa-exclamation-triangle" style="color: #f39c12;"></i></div>
-                    </div>
-                </div>
-                
+            <!-- Página departamentos======================================================================== -->
+            <div id="departamentos" class="content-section">                
                 <div class="card">
                     <div class="card-header">
-                        <h3>Lista de Productos</h3>
-                        <a href="#"><i class="fas fa-plus"></i> Agregar Producto</a>
+                        <h3>Lista de Departamentos</h3>                        
                     </div>
                     <div class="card-table">
-                        <table style="width: 100%;">
-                        <tr style="background: #f8f9fa;">
-                            <th style="padding: 12px;">ID</th>
-                            <th style="padding: 12px;">Producto</th>
-                            <th style="padding: 12px;">Categoría</th>
-                            <th style="padding: 12px;">Precio</th>
-                            <th style="padding: 12px;">Stock</th>
-                        </tr>
-                        <tr>
-                            <td style="padding: 12px;">P001</td>
-                            <td style="padding: 12px;">Laptop Gaming</td>
-                            <td style="padding: 12px;">Electrónica</td>
-                            <td style="padding: 12px;">$1,299</td>
-                            <td style="padding: 12px;">45</td>
-                        </tr>
-                        <tr style="border-top: 1px solid #eee;">
-                            <td style="padding: 12px;">P002</td>
-                            <td style="padding: 12px;">Mouse Inalámbrico</td>
-                            <td style="padding: 12px;">Accesorios</td>
-                            <td style="padding: 12px;">$49</td>
-                            <td style="padding: 12px;">120</td>
-                        </tr>
-                    </table>
+                        <div id="departamentosRows"></div>                    
                     </div>                    
                 </div>
             </div>
 
-            <!-- Página titulos y salarios -->
+            <!-- Página titulos y salarios ===================================================================================-->
             <div id="titulosysalarios" class="content-section">
                 <div class="stats-grid">
                     <div class="stat-card">
@@ -315,31 +168,88 @@
                 </div>
             </div>
 
-            <!-- Página Incidencias -->
+            <!-- Página Incidencias =============================================================================================-->
             <div id="incidencias" class="content-section">
                 <div class="card">
-                    <div class="card-header"><h3>Configuración del Sistema</h3></div>
-                    <div style="padding: 15px;">
+                    <div class="card-header"><h3>Registro de incidencias</h3></div>
+                    <div class="formIncidencias" style="padding: 15px;">
                         <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 8px;">Nombre del Sitio</label>
-                            <input type="text" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="Dashboard Sistema">
+                            <label style="display: block; margin-bottom: 8px;">No Empleado</label>
+                            <input type="number" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="Numero de empleado">
                         </div>
                         <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 8px;">Email de Contacto</label>
-                            <input type="email" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="contacto@dashboard.com">
+                            <label style="display: block; margin-bottom: 8px;">Tipo</label>
+                            <input type="text" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="Tipo">
                         </div>
                         <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 8px;">Idioma</label>
-                            <select style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                                <option>Español</option>
-                                <option>English</option>
+                            <label style="display: block; margin-bottom: 8px;">Fecha</label>
+                            <input type="date" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="Fecha incidencia">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px;">Descripción</label>
+                            <input type="text" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="Descripcion incidencia">
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px;">Estatus</label>
+                            <select id="selectStatusInc" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                                <option value="0">Abierto</option>
+                                <option value="1">Revisado</option>
+                                <option value="2">Cerrado</option>
                             </select>
-                        </div>
-                        <button style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer;">Guardar Cambios</button>
+                        </div> 
+                        <div style="margin-bottom: 20px; margin-left: 30px;">
+                            <br>
+                            <br>
+                            <button id="btnSaveIncidencia" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer;">Guardar</button>
+                        </div>                       
+                    </div>                    
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Lista de Incidencias</h3>                        
                     </div>
+                    <div class="form-container">
+                        <form id="searchForm" class="form-display">
+                            <div class="form-group">
+                                <label for="descripInc">Descripción:</label>
+                                <input type="text" id="descripInc" name="descripInc" placeholder="Descripción Incidencia">
+                                <div class="error" id="errorNumero">Ingrese al descripción</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tipoInc">Tipo:</label>
+                                <input type="text" id="tipoInc" name="tipoInc" placeholder="Tipo de incidencia">
+                                <div class="error" id="errorTexto">Ingrese el tipo</div>
+                            </div>
+                            <div>
+                                <br>
+                                <button id="btn-buscarIncidencia" onclick="event.preventDefault(); consultaAsignaIncidencias()">🔍 Buscar</button>
+                            </div>                            
+                        </form>                        
+                        <div id="resultado" class="resultado"></div>
+                    </div>
+                    <div class="card-table">
+                        <div id="incidenciasRows"></div>                    
+                    </div>                    
                 </div>
             </div>
-        </div>
-    </div>
+        </div>    
+        <div id="modalInfo" class="modal">
+            <div class="modal-content">
+                <div class="closeModal">
+                    <span id="spanCloseModal" class="close"><i class="fa-regular fa-circle-xmark"></i></span> 
+                </div>                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 id="modalTitle">--</h3>                        
+                    </div>
+                    <div class="card-table">
+                        <div id="modalContent"></div>                    
+                    </div>                    
+                </div>                             
+            </div>
+        </div>    
+    </div>    
 </body>
 </html>

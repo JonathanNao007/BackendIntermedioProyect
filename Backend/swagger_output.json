@@ -42,6 +42,11 @@
             "name": "nameEmployee",
             "in": "query",
             "type": "string"
+          },
+          {
+            "name": "idEmployee",
+            "in": "query",
+            "type": "string"
           }
         ],
         "responses": {
@@ -75,7 +80,28 @@
         }
       }
     },
-    "/api/employees/{id}/historial": {
+    "/api/employees/{id}/historialTitles": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/employees/{id}/historialSalary": {
       "get": {
         "description": "",
         "parameters": [

@@ -78,9 +78,8 @@ app.get('/api/employees/:id', async(req, res)=>{
                                         FROM employees e 
                                         LEFT JOIN dept_emp de ON e.emp_no = de.emp_no
                                         LEFT JOIN departments d ON de.dept_no = d.dept_no
-                                        LEFT JOIN titles t ON e.emp_no = t.emp_no
                                         WHERE e.emp_no ='${idEmployee}'
-                                        ORDER BY t.to_date DESC
+                                        ORDER BY de.from_date DESC
                                         LIMIT 1;`;
         const [rows] = await pool.query(queryConsult);
         res.json(rows)
@@ -93,17 +92,36 @@ app.get('/api/employees/:id', async(req, res)=>{
     }
 });
 
-app.get('/api/employees/:id/historial', async(req, res)=>{
+app.get('/api/employees/:id/historialTitles', async(req, res)=>{
     try{
         const id = parseInt(req.params.id);
         const idEmployee = Number.isNaN(id) ? 0 : id;    
         //
-        let queryConsult = `SELECT e.emp_no, first_name, last_name, s.from_date, s.to_date, s.salary, title, t.from_date, t.to_date
+        let queryConsult = `SELECT e.emp_no, first_name, last_name, title, t.from_date, t.to_date
                             FROM employees e 
-                            RIGHT JOIN salaries s ON e.emp_no = s.emp_no 
                             RIGHT JOIN titles t ON e.emp_no = t.emp_no 
                             WHERE e.emp_no = '${idEmployee}'
                             ORDER BY e.emp_no;`;
+        const [rows] = await pool.query(queryConsult);
+        res.json(rows)        
+    } catch(error){
+        res.status(500).json({
+            mensaje: "Error en la consulta del historial de un emplado",
+            error: error.sqlMessage
+        })
+    }
+});
+
+app.get('/api/employees/:id/historialSalary', async(req, res)=>{
+    try{
+        const id = parseInt(req.params.id);
+        const idEmployee = Number.isNaN(id) ? 0 : id;    
+        //
+        let queryConsult = `SELECT e.emp_no, first_name, last_name, s.salary, s.from_date, s.to_date
+                            FROM employees e 
+                            RIGHT JOIN salaries s ON e.emp_no = s.emp_no 
+                            WHERE e.emp_no = '${idEmployee}'
+                            ORDER BY s.salary DESC;`;
         const [rows] = await pool.query(queryConsult);
         res.json(rows)
     } catch(error){
@@ -117,7 +135,7 @@ app.get('/api/employees/:id/historial', async(req, res)=>{
 
 app.get('/api/departments', async (req, res)=>{
     try{
-        let query = `SELECT dept_no, dept_name FROM departments;`;
+        let query = `SELECT dept_no, dept_name FROM departments ORDER BY dept_no;`;
         const [rows] = await pool.query(query);
         res.json(rows);
     } catch(error){
@@ -132,7 +150,7 @@ app.get('/api/departments', async (req, res)=>{
 app.get('/api/departments/:dept_no/employes', async (req, res)=>{
     try{
         const dept_no = req.params.dept_no;
-        let query = `SELECT dept_name, from_date, to_date, first_name, last_name 
+        let query = `SELECT e.emp_no, dept_name, from_date, to_date, first_name, last_name 
                     FROM departments d
                     LEFT JOIN dept_emp de ON d.dept_no = de.dept_no
                     RIGHT JOIN employees e ON de.emp_no = e.emp_no
@@ -154,19 +172,19 @@ app.get('/api/incidencias', async (req, res)=>{
     try{
         const description = req.query.description ? req.query.description.trim() : '';
         const type = req.query.type ? req.query.type.trim() : ''; 
-        let query = `SELECT  id_incidencias, i.emp_no, tipo, fecha, descripcion, estatus
+        let query = `SELECT  id_incidencias, i.emp_no, tipo, fecha, descripcion, estatus, e.first_name, e.last_name
                     FROM incidencias_rrhh i
                     LEFT JOIN employees e ON i.emp_no = e.emp_no`;
 
         if(description !== '' && type !== ''){
-            query += `WHERE i.decripcion LIKE '%${description}%' 
+            query += ` WHERE i.descripcion LIKE '%${description}%' 
                     AND i.tipo = '${type}';`;
         }
         else if(description !== ''){
-            query += `WHERE i.decripcion LIKE '%${description}%';`;
+            query += ` WHERE i.descripcion LIKE '%${description}%';`;
         }
         else if(type !== ''){
-            query += `WHERE i.tipo = '${type}';`;
+            query += ` WHERE i.tipo LIKE '%${type}%';`;
         }    
         else{
             query += `;`; 
@@ -224,13 +242,12 @@ app.get('/api/dashboard/resume', async (req, res)=>{
             salarios: [],
             departamentos: []
         };
-        let queryEmp = `SELECT first_name, last_name, gender, hire_date FROM employees ORDER BY hire_date DESC LIMIT 10;`;
-        let querySal = `SELECT first_name, last_name, gender, salary, title  FROM salaries s 
+        let queryEmp = `SELECT first_name, last_name, CASE WHEN gender = 'M' THEN 'Male' ELSE 'Female' END AS gender, hire_date FROM employees ORDER BY hire_date DESC LIMIT 5;`;
+        let querySal = `SELECT first_name, last_name, CASE WHEN gender = 'M' THEN 'Male' ELSE 'Female' END AS gender, salary  FROM salaries s 
                         LEFT JOIN employees e ON s.emp_no = e.emp_no
-                        LEFT JOIN titles t ON e.emp_no = t.emp_no 
                         ORDER BY salary DESC
-                        LIMIT 10;`;
-        let queryDep = `SELECT d.dept_name, COUNT(e.emp_no) FROM departments d
+                        LIMIT 5;`;
+        let queryDep = `SELECT d.dept_name, COUNT(e.emp_no) AS num_emp FROM departments d
                         LEFT JOIN dept_emp de ON d.dept_no = de.dept_no
                         LEFT JOIN employees e ON de.emp_no = e.emp_no 
                         GROUP BY d.dept_no;`;
@@ -266,7 +283,7 @@ app.get('/api/openweathermap', async (req, res)=> {
         const longitud = -99.1277;
         //const ciudad = req.query.ciudad ? req.query.ciudad.trim() : configApi.CiudadInicial;
         if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
+            navigator.geolocation.getCurrentPosition(
             (position) => {
             latitud = position.coords.latitude;
             longitud = position.coords.longitude;

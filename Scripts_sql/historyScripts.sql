@@ -50,3 +50,34 @@ VALUES ('', '', '', '', '');
 -- actualizar registros
 UPDATE incidencias_rrhh SET tipo = '', fecha = '', descripcion = '', estatus = ''
 WHERE id_incidencias = '';
+
+
+SELECT COUNT(emp_no) FROM employees;
+
+SELECT dept_name, from_date, to_date, first_name, last_name 
+FROM departments d
+LEFT JOIN dept_emp de ON d.dept_no = de.dept_no
+RIGHT JOIN employees e ON de.emp_no = e.emp_no
+WHERE de.dept_no = 'd009'
+ORDER BY de.to_date DESC;
+
+
+SELECT e.emp_no, first_name, last_name, title, t.from_date, t.to_date
+FROM employees e 
+RIGHT JOIN titles t ON e.emp_no = t.emp_no 
+WHERE e.emp_no = '10200'
+ORDER BY e.emp_no;
+
+SELECT e.emp_no, first_name, last_name, s.from_date, s.to_date, s.salary
+FROM employees e 
+RIGHT JOIN salaries s ON e.emp_no = s.emp_no 
+WHERE e.emp_no = '10200'
+ORDER BY s.salary DESC;
+
+SELECT birth_date, first_name, last_name, gender, hire_date, d.dept_name
+FROM employees e 
+LEFT JOIN dept_emp de ON e.emp_no = de.emp_no
+LEFT JOIN departments d ON de.dept_no = d.dept_no
+WHERE e.emp_no ='410142'
+ORDER BY de.from_date DESC
+LIMIT 1;
