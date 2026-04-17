@@ -21,8 +21,13 @@
         const modal = document.getElementById('modalInfo');    
         const modalTitle = document.getElementById('modalTitle')
         const btnCloseModal = document.getElementById('spanCloseModal');
-        //
-        const 
+        //Fomr de incidencias
+        const idIncidencia = document.getElementById('idIncidencia');
+        const txtNoEmpleadoInc = document.getElementById('txtNoEmpleadoInc');
+        const txtTipoInc = document.getElementById('txtTipoInc');
+        const txtFechaInc = document.getElementById('txtFechaInc');
+        const txtDescripcionInc = document.getElementById('txtDescripcionInc');
+        const selectStatusInc = documento.getElementById('selectStatusInc');
         //
         let mensajeClimaActual = '';
         let mensajeClimaActualCom = '';
@@ -488,6 +493,58 @@
                 mostrarLoading(false);
                 console.error('Error:', error);
             }
+        }
+
+        async function guardarIncidencia(){
+             try{
+                mostrarLoading(true);
+                const id = idIncidencia.value;
+                const incidencia = {
+                    emp_no : txtNoEmpleadoInc.value,
+                    tipo : txtTipoInc.value,
+                    fecha : txtFechaInc.value,
+                    descripcion : txtDescripcionInc.value,
+                    estatus : selectStatusInc.value
+                }
+                console.log(incidencia);
+                let response;
+                if(id){
+                    response = await fetch('', {
+                        method: 'PUT',
+                        headers: {'Content-Type': 'application/json',},
+                        body: JSON.stringify(incidencia)
+                    });
+                }
+                else{
+                    response = await fetch('', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json',},
+                        body: JSON.stringify(incidencia)
+                    });
+                }
+                const data = await response.json();
+                if(response.ok){
+                    alert(data.mensaje, 'exito');
+                    limpiaFormulario();
+                    consultaAsignaIncidencias();
+                }
+                else{
+                    alert(data.errores ? data.errores.join(', ') : data.mensaje, 'error');
+                }
+                mostrarLoading(false);
+            } catch(error) {
+                mostrarLoading(false);
+                console.error('Error:', error);
+            }
+        }
+
+        function limpiarFormulario() {
+            idIncidencia.value = '';
+            txtNoEmpleadoInc.value = '';
+            txtTipoInc.value = '';
+            txtFechaInc.value = '';
+            txtDescripcionInc.value = '';
+            selectStatusInc.selectedIndex = -1; 
         }
 
         document.addEventListener("DOMContentLoaded", (event) => {
