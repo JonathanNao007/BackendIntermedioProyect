@@ -491,7 +491,7 @@
             console.log("The DOM is fully loaded.");
             // Your code to manipulate elements goes here
             consultaAsignaDashboard();
-            // consultarClima();
+            consultarClima();
 
         });
 
