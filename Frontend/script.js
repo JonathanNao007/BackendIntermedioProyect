@@ -27,7 +27,7 @@
         const txtTipoInc = document.getElementById('txtTipoInc');
         const txtFechaInc = document.getElementById('txtFechaInc');
         const txtDescripcionInc = document.getElementById('txtDescripcionInc');
-        const selectStatusInc = documento.getElementById('selectStatusInc');
+        const selectStatusInc = document.getElementById('selectStatusInc');
         //
         let mensajeClimaActual = '';
         let mensajeClimaActualCom = '';
@@ -545,6 +545,26 @@
             txtFechaInc.value = '';
             txtDescripcionInc.value = '';
             selectStatusInc.selectedIndex = -1; 
+        }
+
+        function aisgnaValoresFormulario(incidencia) {            
+            idIncidencia.value = incidencia.id_incidencias;
+            txtNoEmpleadoInc.value = incidencia.emp_no;
+            txtTipoInc.value = incidencia.tipo;
+            txtFechaInc.value = incidencia.fecha;
+            txtDescripcionInc.value = incidencia.descripcion;
+            if(incidencia.estatus && incidencia.estatus === '0'){
+                selectStatusInc.selectedIndex = 0;
+            }
+            else if(incidencia.estatus && incidencia.estatus === '1'){
+                selectStatusInc.selectedIndex = 1;
+            }
+            else if(incidencia.estatus && incidencia.estatus === '2'){
+                selectStatusInc.selectedIndex = 2;
+            }
+            else{
+                selectStatusInc.selectedIndex = 0;
+            }             
         }
 
         document.addEventListener("DOMContentLoaded", (event) => {
