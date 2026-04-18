@@ -170,13 +170,17 @@ app.get('/api/departments/:dept_no/employes', async (req, res)=>{
 
 app.get('/api/incidencias', async (req, res)=>{
     try{
+        const idIncidencia = req.query.idIncidencia ? req.query.idIncidencia.trim() : '';
         const description = req.query.description ? req.query.description.trim() : '';
         const type = req.query.type ? req.query.type.trim() : ''; 
         let query = `SELECT  id_incidencias, i.emp_no, tipo, fecha, descripcion, estatus, e.first_name, e.last_name
                     FROM incidencias_rrhh i
                     LEFT JOIN employees e ON i.emp_no = e.emp_no`;
 
-        if(description !== '' && type !== ''){
+        if(idIncidencia !== ''){
+            query += ` WHERE id_incidencias = ${idIncidencia};`;
+        }
+        else if(description !== '' && type !== ''){
             query += ` WHERE i.descripcion LIKE '%${description}%' 
                     AND i.tipo = '${type}';`;
         }
@@ -222,7 +226,7 @@ app.put('/api/incidencias/:id', async (req, res)=>{
         const id_incidencias = Number.isNaN(id) ? 0 : id;  
         //
         const {tipo, fecha, descripcion, estatus} = req.body;
-        let query = `UPDATE incidencias_rrhh SET tipo = '${tipo}', fecha = STR_TO_DATE('${fecha}'), descripcion = '${descripcion}', estatus = '${estatus}'
+        let query = `UPDATE incidencias_rrhh SET tipo = '${tipo}', fecha = STR_TO_DATE('${fecha}', '%Y-%m-%d'), descripcion = '${descripcion}', estatus = '${estatus}'
                     WHERE id_incidencias = '${id_incidencias}';`;
         const [rows] = await pool.query(query);
         res.json(rows);

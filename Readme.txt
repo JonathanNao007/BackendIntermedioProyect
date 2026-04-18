@@ -12,3 +12,11 @@ http://localhost:3000/
 
 -- Url Documentacion del API (Swagger)
 http://localhost:3000/api-docs
+
+
+--COMANDOS 
+--Generacion automatica de la documentacion SWAGGER 
+node swagger.js
+
+--Inicializar el applicatio
+node server.js

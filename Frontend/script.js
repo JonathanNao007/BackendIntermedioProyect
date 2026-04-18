@@ -10,7 +10,6 @@
         // Obtener elementos
         const navItems = document.querySelectorAll('.nav-item');
         const sections = document.querySelectorAll('.content-section');
-        console.log(sections);
         const pageTitle = document.getElementById('pageTitle');
         const pageDescription = document.getElementById('pageDescription');
         const btnSearchEmpleado = document.getElementById('btn-buscarEmpleado');   
@@ -412,7 +411,7 @@
                                     <td style="padding: 12px;">${e.descripcion}</td>
                                     <td style="padding: 12px;">${e.estatus}</td>
                                     <td style="padding: 12px;">
-                                        <i class="fas fa-edit" style="color: #667eea; margin-right: 5px; cursor: pointer;" onclick="event.preventDefault();"></i>
+                                        <i class="fas fa-edit" style="color: #667eea; margin-right: 5px; cursor: pointer;" onclick="event.preventDefault(); aisgnaValoresFormulario(${e.id_incidencias})"></i>
                                     </td>
                                 </tr>`;
                     });
@@ -432,7 +431,6 @@
                 let url = `/api/dashboard/resume`;
                 const response = await fetch(url);
                 const data = await response.json();
-                console.log(data);
                 const resumeSalariosDep = document.getElementById('resumeSalariesRows');
                 const resumeDepartementosRows = document.getElementById('resumeDepartementosRows');
                 const resumeContratacionesRows = document.getElementById('resumeContratacionesRows');
@@ -506,17 +504,16 @@
                     descripcion : txtDescripcionInc.value,
                     estatus : selectStatusInc.value
                 }
-                console.log(incidencia);
                 let response;
                 if(id){
-                    response = await fetch('', {
+                    response = await fetch(`/api/incidencias/${id}`, {
                         method: 'PUT',
                         headers: {'Content-Type': 'application/json',},
                         body: JSON.stringify(incidencia)
                     });
                 }
                 else{
-                    response = await fetch('', {
+                    response = await fetch('/api/incidencias', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json',},
                         body: JSON.stringify(incidencia)
@@ -524,12 +521,12 @@
                 }
                 const data = await response.json();
                 if(response.ok){
-                    alert(data.mensaje, 'exito');
-                    limpiaFormulario();
+                    alert(`${data.statusText}, exito...`);
+                    limpiarFormulario();
                     consultaAsignaIncidencias();
                 }
                 else{
-                    alert(data.errores ? data.errores.join(', ') : data.mensaje, 'error');
+                    alert(`${data.errores ? data.errores.join(', ') : data.mensaje}, error`);
                 }
                 mostrarLoading(false);
             } catch(error) {
@@ -547,19 +544,24 @@
             selectStatusInc.selectedIndex = -1; 
         }
 
-        function aisgnaValoresFormulario(incidencia) {            
-            idIncidencia.value = incidencia.id_incidencias;
-            txtNoEmpleadoInc.value = incidencia.emp_no;
-            txtTipoInc.value = incidencia.tipo;
-            txtFechaInc.value = incidencia.fecha;
-            txtDescripcionInc.value = incidencia.descripcion;
-            if(incidencia.estatus && incidencia.estatus === '0'){
+        async function aisgnaValoresFormulario(id_incidencias) {    
+            let url = `/api/incidencias?idIncidencia=${id_incidencias}`;
+            const response = await fetch(url);
+            const incidencia = await response.json();
+            const item = incidencia[0];
+
+            idIncidencia.value = id_incidencias;
+            txtNoEmpleadoInc.value = item.emp_no;
+            txtTipoInc.value = item.tipo;
+            txtFechaInc.value = item.fecha.split('T')[0];
+            txtDescripcionInc.value = item.descripcion;
+            if(item.estatus && item.estatus === '0'){
                 selectStatusInc.selectedIndex = 0;
             }
-            else if(incidencia.estatus && incidencia.estatus === '1'){
+            else if(item.estatus && item.estatus === '1'){
                 selectStatusInc.selectedIndex = 1;
             }
-            else if(incidencia.estatus && incidencia.estatus === '2'){
+            else if(item.estatus && item.estatus === '2'){
                 selectStatusInc.selectedIndex = 2;
             }
             else{
@@ -571,7 +573,7 @@
             console.log("The DOM is fully loaded.");
             //Your code to manipulate elements goes here
             consultaAsignaDashboard();
-            //consultarClima();
+            consultarClima();
 
         });
 

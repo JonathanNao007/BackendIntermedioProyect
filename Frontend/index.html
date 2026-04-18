@@ -204,8 +204,13 @@
                         <div style="margin-bottom: 20px; margin-left: 30px;">
                             <br>
                             <br>
-                            <button id="btnSaveIncidencia" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer;">Guardar</button>
-                        </div>                       
+                            <button id="btnSaveIncidencia" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer;" onclick="event.preventDefault(); guardarIncidencia()">Guardar</button>
+                        </div> 
+                        <div style="margin-bottom: 20px; margin-left: 30px;">
+                            <br>
+                            <br>
+                            <button id="btnCleanFormIncidencia" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 10px 25px; border: none; border-radius: 8px; cursor: pointer;" onclick="event.preventDefault(); limpiarFormulario()">Limpiar</button>
+                        </div>                                          
                     </div>                    
                 </div>
                 <br>
